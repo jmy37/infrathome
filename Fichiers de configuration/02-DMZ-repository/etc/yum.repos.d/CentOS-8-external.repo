@@ -1,0 +1,115 @@
+[AppStream-centos8]
+name=AppStream for CentOS 8 (x86_64)
+mirrorlist=http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=os
+gpgcheck=1
+enabled=0
+gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official
+
+[BaseOS-centos8]
+name=BaseOS for CentOS 8 (x86_64)
+mirrorlist=http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=os
+gpgcheck=1
+enabled=0
+gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official
+
+[extras-centos8]
+name=Extras for CentOS 8 (x86_64)
+mirrorlist=http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=extras&infra=os
+gpgcheck=1
+enabled=0
+gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official
+
+[PowerTools-centos8]
+name=PowerTools for CentOS 8 (x86_64)
+mirrorlist=http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=PowerTools&infra=os
+gpgcheck=1
+enabled=0
+gpgkey=http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-Official
+
+[epel-centos8]
+name=EPEL for CentOS 8 (x86_64)
+metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-8&arch=x86_64&infra=os&content=
+failovermethod=priority
+gpgcheck=1
+enabled=0
+gpgkey=http://fr2.rpmfind.net/linux/epel/RPM-GPG-KEY-EPEL-8
+
+[mariadb-centos8]
+name=MariaDB for CentOS 8 (x86_64)
+baseurl=http://yum.mariadb.org/10.5/centos8-amd64/
+gpgcheck=1
+enabled=0
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+
+[atomic-centos8]
+name=atomic for CentOS 8 (x86_64)
+mirrorlist=http://updates.atomicorp.com/channels/mirrorlist/atomic/centos-8-x86_64
+protect=0
+gpgcheck=1
+enabled=0
+gpgkey=https://www.atomicorp.com/RPM-GPG-KEY.atomicorp.txt
+
+[puppet6-centos8]
+name=Puppet 6 for CentOS 8 (x86_64)
+baseurl=http://yum.puppetlabs.com/puppet6/el/8/x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=http://yum.puppetlabs.com/RPM-GPG-KEY-puppet
+       http://yum.puppetlabs.com/RPM-GPG-KEY-puppet-20250406
+
+[foreman22-centos8]
+name=Foreman 2.2 for CentOS 8 (x86_64)
+baseurl=https://yum.theforeman.org/releases/2.2/el8/x86_64
+gpgcheck=1
+enabled=0
+gpgkey=https://yum.theforeman.org/releases/2.2/RPM-GPG-KEY-foreman
+
+[foreman22-plugins-centos8]
+name=Foreman 2.2 Plugins for CentOS 8 (x86_64)
+baseurl=https://yum.theforeman.org/plugins/2.2/el8/x86_64
+gpgcheck=1
+enabled=0
+gpgkey=https://yum.theforeman.org/releases/2.2/RPM-GPG-KEY-foreman
+
+[katello-318-centos8]
+name=Katello 3.18 for CentOS 8 (x86_64)
+baseurl=https://fedorapeople.org/groups/katello/releases/yum/3.18/katello/el8/x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=https://yum.theforeman.org/releases/2.2/RPM-GPG-KEY-foreman
+
+[katello-pulp-centos8]
+name=Pulp Community for CentOS 8 (x86_64)
+baseurl=https://repos.fedorapeople.org/repos/pulp/pulp/stable/latest/8Server/x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=https://repos.fedorapeople.org/repos/pulp/pulp/GPG-RPM-KEY-pulp-2
+
+[katello-qpid-centos8]
+name=qpid for CentOS 8 (x86_64)
+baseurl=https://download.copr.fedorainfracloud.org/results/@qpid/qpid/epel-8-x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=https://download.copr.fedorainfracloud.org/results/@qpid/qpid/pubkey.gpg
+
+[katello-candlepin318-centos8]
+name=Candlepin 3.18 for CentOS 8 (x86_64)
+baseurl=https://fedorapeople.org/groups/katello/releases/yum/3.18/candlepin/el8/x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=https://yum.theforeman.org/releases/2.2/RPM-GPG-KEY-foreman
+
+[katello-pulpcore37-centos8]
+name=pulpcore for CentOS 8 (x86_64)
+baseurl=https://yum.theforeman.org/pulpcore/3.7/el8/x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=https://yum.theforeman.org/pulpcore/3.7/GPG-RPM-KEY-pulpcore 
+
+[zabbix52-centos8]
+name=Zabbix 5.2 for CentOS 8 (x86_64)
+baseurl=http://repo.zabbix.com/zabbix/5.2/rhel/8/x86_64/
+gpgcheck=1
+enabled=0
+gpgkey=https://repo.zabbix.com/RPM-GPG-KEY-ZABBIX-A14FE591 
+

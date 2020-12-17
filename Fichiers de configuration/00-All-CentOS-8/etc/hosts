@@ -1,0 +1,18 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+172.16.20.2   vlsfwlacs0102
+172.16.20.3   vlsitmacs01
+172.16.20.6   vlslogacs01
+172.16.20.7   vlslogacs02
+172.16.20.9   vlsupdacs01
+172.16.20.12  vlsmonacs01
+172.16.20.15  vlsdbsacs01
+172.16.20.16  vlsdbsacs02
+172.16.20.252 vlsfwlacs01
+172.16.20.253 vlsfwlacs02
+172.16.20.254 gateway
+
+192.168.1.5   vlsdepacs01
+192.168.1.6   vlsdepacs02
+192.168.1.7   vlsdepacs0102
+

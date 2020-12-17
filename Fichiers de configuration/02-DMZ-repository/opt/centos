@@ -1,0 +1,16 @@
+8,AppStream-centos8
+8,BaseOS-centos8
+8,extras-centos8
+8,PowerTools-centos8
+8,epel-centos8
+8,mariadb-centos8
+8,atomic-centos8
+8,puppet6-centos8
+8,foreman22-centos8
+8,foreman22-plugins-centos8
+8,katello-318-centos8
+8,katello-pulp-centos8
+8,katello-qpid-centos8
+8,katello-candlepin318-centos8
+8,katello-pulpcore37-centos8
+8,zabbix52-centos8

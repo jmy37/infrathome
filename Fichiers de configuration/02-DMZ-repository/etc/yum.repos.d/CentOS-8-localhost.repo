@@ -1,0 +1,28 @@
+[AppStream-centos8-intra-at-home]
+name=AppStream for CentOS 8 (x86_64) - provided by Infra-at-Home
+baseurl=http://localhost/centos/8/AppStream-centos8/
+gpgcheck=1
+enabled=1
+gpgkey=http://localhost/rpm-gpg-key/RPM-GPG-KEY-CentOS-8
+
+[BaseOS-centos8-intra-at-home]
+name=BaseOS for CentOS 8 (x86_64) - provided by Infra-at-Home
+baseurl=http://localhost/centos/8/BaseOS-centos8/
+gpgcheck=1
+enabled=1
+gpgkey=http://localhost/rpm-gpg-key/RPM-GPG-KEY-CentOS-8
+
+[epel-centos8-intra-at-home]
+name=EPEL for CentOS 8 (x86_64) - provided by Infra-at-Home
+baseurl=http://localhost/centos/8/epel-centos8/
+gpgcheck=1
+enabled=1
+gpgkey=http://localhost/rpm-gpg-key/RPM-GPG-KEY-EPEL-8
+
+[zabbix52-centos8-infra-at-home]
+name=Zabbix 5.2 for CentOS 8 (x86_64) - provided by Infra-at-Home
+baseurl=http://localhost/centos/8/zabbix52-centos8/
+gpgcheck=1
+enabled=1
+gpgkey=http://localhost/rpm-gpg-key/RPM-GPG-KEY-zabbix-A14FE591
+
