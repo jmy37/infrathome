@@ -1,0 +1,55 @@
+\documentclass[a4paper, oneside, 12pt, final, headsepline, footsepline]{scrartcl}
+\usepackage{InfraAtHomeExportableArticle}
+
+%------------ DOCUMENT -----------------
+\begin{document}
+%------------ HEADERS + FOOTERS --------
+\configHeadersFooters
+%------------ VARIABLES ----------------
+
+\title{DMZ \\Pare-feu externe PFsense} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{Infr@home\_GUI-INST\_01-External-firewall}
+\author{jmy37}
+\date{\today}
+
+%------------ TITLE PAGE -----------------
+\maketitlepage
+
+%------------ VERSIONNING ----------------
+\section{Historique des versions}
+\begin{table}[H]
+    \centering
+    % \begin{tabular}{|l|l|l|l|}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.09\linewidth}|>{\centering\arraybackslash}p{0.12\linewidth}|>{\raggedright\arraybackslash}p{0.12\linewidth}|>{\raggedright\arraybackslash}p{0.6\linewidth}|}
+        \hline
+        \textbf{Version} & \textbf{Date} & \textbf{Auteur} & \textbf{Objet de la modification}                                              \\ \hline
+        \textbf{1.0}     & 20/10/2020    & jmy37           & Création du document                                                           \\ \hline
+        \textbf{1.1}     & 09/12/2020    & jmy37           & Ajout du serveur NTP (titre 5.7)                                               \\ \hline
+        \textbf{2.0}     &               & jmy37           & Renommage du document pour séparer les pare-feu internes et externes           \\
+                         &               &                 & Mise à jour de la licence vers FDL 1.3                                         \\
+                         &               &                 & Ajout d'un disclaimer relatif aux choix des pare-feu (titre 2.1)               \\
+                         &               &                 & Passage du routeur en UTC (titre 3)                                            \\
+                         &               &                 & Ajout du layout français en console (titre 3)                                  \\
+                         &               &                 & Ajout de la configuration (titre 4)                                            \\
+                         &               &                 & Revue des alias et ruissellement dans la suite du document (titre 7.1)         \\
+                         &               &                 & Création de l'annexe relative à la configuration des clients NTP (titre 8.1)   \\
+                         &               &                 & Création de l'annexe relative aux alias du projet (titre 8.3)                  \\
+                         &               &                 & Création de l'annexe relative aux règles du projet (titre 8.4)                 \\ \hline
+    \end{tabular}
+    \caption{Historique des versions}
+    \label{tab:versioning}
+\end{table}
+
+%--------------------------- TABLE DES MATIÈRES -----------------------------
+\newpage
+\tableofcontents
+\newpage
+
+%--------------- DOCUMENT ----------------
+\input{02-Preambule/02-Preambule.tex}
+\newpage
+\input{03-Installation/03-Installation.tex}
+\newpage
+\input{04-Configuration/04-Configuration.tex}
+
+\end{document}

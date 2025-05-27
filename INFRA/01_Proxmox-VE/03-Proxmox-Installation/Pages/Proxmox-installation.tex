@@ -1,0 +1,48 @@
+\subsection{Installation de Proxmox VE}
+\subsubsection{Prérequis}
+Proxmox VE impose une résolution de nom locale afin de fonctionner correctement. Une entrée doit donc être ajoutée dans le fichier \texttt{/etc/hosts} pour le nom de la machine. La vérification de cette résolution de nom peut être réalisée comme présenté en ligne 2 du listing ci-desous, le résultat devant représenter au moins une adresse IP n'étant pas celle du lien local (exemple de représentation en ligne 3).\\
+
+\begin{lstlisting}[language=bash,caption={Résolution de nom locale}]
+echo -e "10.1.30.4       vldhypacs01.infra-at-home.com   vldhypacs01" >> /etc/hosts
+hostname --ip-address
+127.0.1.1 10.1.30.4
+\end{lstlisting}
+
+Le dépôt Proxmox VE doit alors être ajouté au serveur. La clé associée au dépôt doit également être téléchargée.
+
+\begin{lstlisting}[language=bash,caption={Création du dépôt Proxmox VE}]
+echo "deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
+wget https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg -O /etc/apt/trusted.gpg.d/proxmox-release-bookworm.gpg
+\end{lstlisting}
+
+\begin{important}
+Dans ce cas de figure, la machine doit disposer de son adresse IP définitive et d'un accès à Internet. Une configuration s'appuyant sur un dépôt local est également possible.
+\end{important}
+
+\subsubsection{Installation de Proxmox}
+L'installation de Proxmox VE est réalisée en suivant le guide d'installation présenté sur le site officiel de l'éditeur: \url{https://pve.proxmox.com/wiki/Install\_Proxmox\_VE\_on\_Debian\_12\_Bookworm}\\
+~\\
+L'installation doit impérativement être réalisée en deux temps, le kernel devant être modifié avant l'installation des paquets dédiés à Proxmox. Un redémarrage s'exécute automatiquement après l'application de la deuxième commande présentée ci-dessous.
+
+\begin{lstlisting}[language=bash,caption={Installation de Proxmox VE - Partie 1}]
+apt -y install proxmox-default-kernel
+systemctl reboot
+apt -y install proxmox-ve postfix open-iscsi chrony
+apt -y remove linux-image-amd64 'linux-image-6.1*'
+update-grub
+apt -y remove os-prober
+\end{lstlisting}
+
+Le dépôt activé par défaut à l'issue de l'installation est propre à Proxmox VE avec support. En mode gratuit, il faut remplacer ce dépôt par défaut par le dépôt communautaire.
+
+\begin{lstlisting}[language=bash,caption={Remplacement du dépôt par défaut}]
+sed -i -- 's+https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise+http://download.proxmox.com/debian/pve bookworm pvetest+g' /etc/apt/sources.list.d/pve-enterprise.list
+\end{lstlisting}
+
+Afin de réaliser la première connexion à l'interface web de Proxmox VE (\url{https://<ip_de_la_machine>:8006}), il est nécessaire de définir un mot de passe pour l'utilisateur \texttt{root}.
+
+\begin{lstlisting}[language=bash,caption={Définition du mot de passe root}]
+passwd root
+\end{lstlisting}
+
+La suite de l'installation est réalisée au travers de l'interface web.

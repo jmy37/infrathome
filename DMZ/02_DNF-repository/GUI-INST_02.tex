@@ -1,0 +1,84 @@
+\documentclass[a4paper, oneside, 12pt, final, headsepline, footsepline]{scrartcl}
+\usepackage{InfraAtHomeExportableArticle}
+\usepackage{tabularx}
+
+%------------ DOCUMENT -----------------
+\begin{document}
+%------------ HEADERS + FOOTERS --------
+\configHeadersFooters
+%------------ VARIABLES ----------------
+
+\title{DMZ \\Dépôt DMZ DNF} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{Infr@home\_GUI-INST\_02-DNF-repository}
+\author{jmy37}
+\date{\today}
+
+%------------ TITLE PAGE -----------------
+\maketitlepage
+
+%------------ VERSIONNING ----------------
+\section{Historique des versions}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.09\linewidth}|>{\centering\arraybackslash}p{0.12\linewidth}|>{\raggedright\arraybackslash}p{0.12\linewidth}|>{\raggedright\arraybackslash}p{0.6\linewidth}|}
+        \hline
+        \textbf{Version} & \textbf{Date} & \textbf{Auteur} & \textbf{Objet de la modification}                                                                            \\ \hline
+        \textbf{1.0}     & 18/10/2020    & jmy37           & Création du document                                                                                         \\ \hline
+        \textbf{1.1}     & 19/10/2020    & jmy37           & Ajout de la tolérance de panne (annexe 4.7)                                                                  \\ \hline
+        \textbf{1.2}     & 28/11/2020    & jmy37           & Ajout de la tolérance de panne ssl, réorganisation de l'annexe 4.7                                           \\ \hline
+        \textbf{1.3}     & 29/11/2020    & jmy37           & Suppression de la page "welcome" au titre 3.1.2                                                              \\ \hline
+        \textbf{1.4}     & 03/12/2020    & jmy37           & Ajout du dépôt Puppet                                                                                        \\
+                         &               &                 & Ajout du dépôt Foreman                                                                                       \\
+                         &               &                 & Ajout du dépôt de plugins Foreman                                                                            \\
+                         &               &                 & Correction d'une erreur dans la configuration de lsyncd (titre 4.7.3.3)                                      \\ \hline
+        \textbf{1.5}     & 04/12/2020    & jmy37           & Ajout du dépôt Katello                                                                                       \\
+                         &               &                 & Ajout du dépôt Pulp Community                                                                                \\
+                         &               &                 & Ajout du dépôt qpid                                                                                          \\
+                         &               &                 & Ajout du dépôt Candlepin                                                                                     \\
+                         &               &                 & Ajout du dépôt pulpcore                                                                                      \\ \hline
+        \textbf{1.6}     & 10/12/2020    & jmy37           & Colorisation des entrées de sources                                                                          \\
+                         &               &                 & Ajout du dépôt Zabbix                                                                                        \\
+                         &               &                 & Ajout des sources Rsync (titre 4.4)                                                                          \\
+                         &               &                 & Ajout des sources Wget (titre 4.5)                                                                           \\ \hline
+        \textbf{1.7}     & 17/12/2020    & jmy37           & Ajout d'un paramètre répétant la synchronisation en cas d'indisponibilité du serveur distant (titre 4.7.3.3) \\ \hline
+        \textbf{1.8}     & 06/05/2021    & jmy37           & Ajout des sources CentOS 7                                                                                   \\
+                         &               &                 & Mise à jour du dépôt Foreman                                                                                 \\
+                         &               &                 & Mise à jour du dépôt de plugins Foreman                                                                      \\
+                         &               &                 & Mise à jour du dépôt Katello                                                                                 \\
+                         &               &                 & Mise à jour du dépôt Katello-Candlepin                                                                       \\
+                         &               &                 & Mise à jour du dépôt Pulpcore                                                                                \\
+                         &               &                 & Création du dépôt Foreman Client 8                                                                           \\
+                         &               &                 & Création du dépôt Foreman Client 7                                                                           \\
+                         &               &                 & Suppression du dépôt obsolète "katello-pulp"                                                                 \\
+                         &               &                 & Suppression du dépôt obsolète "katello-qpid"                                                                 \\
+                         &               &                 & Suppression du dépôt obsolète "Pulpcore"                                                                     \\ \hline
+        \textbf{1.9}     & xx/xx/xxxx    & jmy37           & Mise à jour de la licence vers FDL 1.3                                                                       \\
+                         &               &                 & Renommage des serveurs conformément à la politique de nommage                                                \\
+                         &               &                 & Passage sur Alma 9                                                                                           \\
+                         &               &                 & Ajout d'un compte de service (titres 3.3.1 et 3.3.4)                                                         \\
+                         &               &                 & Mise à jour du script (titre 3.3.2)                                                                          \\
+                         &               &                 & Activation de rsync (titre 3.4)                                                                              \\
+                         &               &                 & Ajout des dépôts Percona (titre 4.2)                                                                         \\
+                         &               &                 & Ajout des sources Alma 9 (titre 4.3)                                                                         \\
+                         &               &                 & Création d'une synthèse des besoins en stockage (titre 4.1)                                                  \\
+                         &               &                 & Ajout d'une synchronisation initiale pour toutes les sources (titres 4.2, 4.4 et 4.5)                        \\
+                         &               &                 & Ajout des dépôts de la version à venir d'OPNSense (titre 4.4.1)                                              \\
+                         &               &                 & Suppression des dépôts obsolètes                                                                             \\ \hline
+    \end{tabular}
+    \caption{Historique des versions}
+    \label{tab:versioning}
+\end{table}
+
+%--------------------------- TABLE DES MATIÈRES -----------------------------
+\newpage
+\tableofcontents
+\newpage
+
+%--------------- DOCUMENT ----------------
+\input{02-Preambule/02-Preambule.tex}
+\newpage
+\input{03-Installation/03-Installation.tex}
+\newpage
+% \input{04-Configuration/04-Configuration.tex}
+
+\end{document}

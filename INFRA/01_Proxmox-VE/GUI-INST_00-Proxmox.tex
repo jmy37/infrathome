@@ -1,0 +1,44 @@
+\documentclass[a4paper, oneside, 12pt, final, headsepline, footsepline]{scrartcl}
+\usepackage{InfraAtHomeExportableArticle}
+
+%------------ DOCUMENT -----------------
+\begin{document}
+%------------ HEADERS + FOOTERS --------
+\configHeadersFooters
+%------------ VARIABLES ----------------
+
+\title{INFRA \\Environnement de virtualisation} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{Infr@home\_GUI-INST\_00-Proxmox}
+\author{jmy37}
+\date{\today}
+
+%------------ TITLE PAGE -----------------
+\maketitlepage
+
+%------------ VERSIONNING ----------------
+\section{Historique des versions}
+\begin{table}[H]
+    \centering
+    % \begin{tabular}{|l|l|l|l|}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.09\linewidth}|>{\centering\arraybackslash}p{0.12\linewidth}|>{\raggedright\arraybackslash}p{0.12\linewidth}|>{\raggedright\arraybackslash}p{0.6\linewidth}|}
+        \hline
+        \textbf{Version} & \textbf{Date} & \textbf{Auteur} & \textbf{Objet de la modification}                                              \\ \hline
+        \textbf{1.0}     & xx/xx/xxxx    & jmy37           & Création du document                                                           \\ \hline
+    \end{tabular}
+    \caption{Historique des versions}
+    \label{tab:versioning}
+\end{table}
+
+%--------------------------- TABLE DES MATIÈRES -----------------------------
+\newpage
+\tableofcontents
+\newpage
+
+%--------------- DOCUMENT ----------------
+\input{02-Preambule/02-Preambule.tex}
+\newpage
+\input{03-Proxmox-Installation/03-Proxmox-Installation.tex}
+\newpage
+% \input{04-Configuration/04-Configuration.tex}
+
+\end{document}

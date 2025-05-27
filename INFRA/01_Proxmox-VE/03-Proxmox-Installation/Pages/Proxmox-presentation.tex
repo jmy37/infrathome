@@ -1,0 +1,109 @@
+\subsection{Le projet Proxmox VE}
+Proxmox VE est une solution de virtualisation open source basée sur Debian. Il dispose d'un environnement complet et est capable d'héberger des machines virtuelles KVM et des conteneurs LXC. Proxmox VE supporte également nativement le clustering, la gestion des privilèges, la mise en place de règles de pare-feu intégrées, et la sauvegarde, et permet nativement de se connecter à un stockage distant.\\
+~\\
+Proxmox VE permet également de souscrire à un contrat de service, version recommandée pour les besoins professionnels. Les principaux produits de Proxmox peuvent être téléchargés depuis le site officiel: \url{https://www.proxmox.com/en/downloads}. Cependant, dans le cadre de ce projet, l'installation sera réalisée à partir d'une installation de Debian 12 Bookworm.\\
+~\\
+L'installation de Debian est supposée être réalisée conformément au descriptif projet.\\
+~\\
+L'installation peut alors commencer.\\
+~\\
+\huge{\textbf{Dans la théorie, le reste de ce fichier doit être fusionné avec le global...}}\\
+\normalsize
+
+\begin{important}
+L'installation réalisée jusqu'à présent a été faite sur un seul disque, avec les options de montage \textbf{defaults} et en LVM. La totalité des actions réalisées est présentée ci-dessous, pour application dans le descriptif projet.
+\end{important}
+
+Prérequis applicatifs:
+\begin{lstlisting}[language=bash,caption={Prérequis applicatifs}]
+apt -y clean
+apt-cache gencaches
+apt -y update
+apt -y upgrade
+apt -y full-upgrade
+apt -y remove vim-tiny
+apt -y install mlocate rsyslog clamav clamav-daemon chrony vim auditd man apt-file wget iptables
+# Pour virtualisation, ajouter qemu-guest-agent et compléter avec un systemctl enable --now qemu-guest-agent
+apt -y autoremove
+\end{lstlisting}
+
+Ajout de l'alias ll
+\begin{lstlisting}[language=bash,caption={Ajout de l'alias ll}]
+echo -e "alias ll='ls -l'" > /etc/profile.d/00-aliases.sh
+\end{lstlisting}
+
+Régler le fuseau horaire
+\begin{lstlisting}[language=bash,caption={Régler le fuseau horaire}]
+timedatectl set-timezone UTC
+\end{lstlisting}
+
+Dans /usr/share/vim/vim90/defaults.vim
+\begin{lstlisting}[language=bash,caption={Configuration de VIM}]
+Commenter:
+" In many terminal emulators the mouse works just fine.  By enabling it you
+" can position the cursor, Visually select and scroll with the mouse.
+" Only xterm can grab the mouse events when using the shift key, for other
+" terminals use ":", select text and press Esc.
+"if has('mouse')
+"  if &term =~ 'xterm'
+"    set mouse=a
+"  else
+"    set mouse=nvi
+"  endif
+"endif
+\end{lstlisting}
+
+\textbf{La recompilation du noyau n'a pas été réalisée.}
+
+Bannières
+\begin{lstlisting}[language=bash,caption={Bannières}]
+echo "---- UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED       ----
+---- LES ACCES NON-AUTORISES A CET EQUIPEMENT SONT PROHIBES ----
+
+You must have explicit, authorized permission to access or configure this device. Unauthorized attempts and actions to access or use this system may result in civil and/or criminal penalties. All activities performed on this device are logged and monitored.
+
+Vous devez avoir une autorisation explicite afin d'acceder ou de configurer cet equipement. Les tentatives non-autorisees et les actions pour acceder ou utiliser ce systeme peuvent conduire a des poursuites civiles et/ou penales. Toutes les activites realisees sur cet equipement sont enregistrees et supervisees." > /etc/issue
+
+sed -i -- 's+#Banner none+Banner /etc/issue+g' /etc/ssh/sshd_config
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash,caption={Configuration réseau}]
+### Replace
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug enp88s0
+iface enp88s0 inet dhcp
+
+### By
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug enp88s0
+iface enp88s0 inet static
+ address 10.1.30.4/24
+ gateway 10.1.30.1
+ dns-nameservers 8.8.8.8 8.8.4.4
+\end{lstlisting}
+
+Redémarrer le réseau
+\begin{lstlisting}[language=bash,caption={Prise en compte des modifs réseau}]
+ifdown enp88s0
+ifup enp88s0
+### Or
+systemctl restart networking.service
+\end{lstlisting}

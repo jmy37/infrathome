@@ -1,0 +1,32 @@
+\section{Préambule}
+Ce document décrit l'installation, l'exploitation et la résolution de pannes associées au composant "Hyperviseurs" de la solution "Infr@home". C'est un composant particulier, car l'hébergement du projet peut être effectué sur n'importe quelle plateforme de virtualisation, et l'emploi d'une architecture professionnelle s'appuyant sur de multiples clusters est recommandée.\\
+
+Ce document présente l'installation et la configuration de Proxmox VE, brique de virtualisation du projet, ainsi que d'un cluster de stockage Synology.\\
+
+\subsection{Matériel retenu et exploité}
+Le projet initial étant produit non pas en entreprise, mais en hébergement à domicile, le matériel est retenu pour ses performances, sa consommation énergétique, son coût et son encombrement.\\
+
+\subsubsection{Hyperviseurs}
+Les hyperviseurs devront faire fonctionner Proxmox VE et héberger les machines virtuelles. Ils doivent être capables de fonctionner en cluster. Par conséquent, ils doivent disposer de processeurs performants et de grandes quantités de mémoire vive.\\
+~\\
+Pour cette raison, le premier hyperviseur est un Intel NUC\footnote{\url{https://www.intel.fr/content/www/fr/fr/products/docs/boards-kits/nuc/mini-pcs/nuc-12-pro.html}} NUC11TNKv7 avec la configuration suivante :
+\begin{itemize}
+    \item Processeur Intel Core i7-1185G7
+    \item Mémoire vive 64Go
+    \item Stockage 120Go SSD NVMe
+\end{itemize}
+
+Cette machine prendra la totalité de la charge CPU requise, et pourra héberger environ 60Go d'équivalent mémoire vive. L'ajout d'un hyperviseur dans le cluster restera simple en cas de besoin.\\
+
+\begin{tip}
+Pour un déploiement en environnement professionnel, de véritables serveurs sont requis, ceci afin de disposer du contrôle ECC de mémoire vive, de la tolérance de panne concernant les alimentations et le réseau, de plusieurs cartes réseaux dédiées...
+\end{tip}
+
+\subsubsection{Stockage}
+Le stockage est réalisé par sur NAS Synology DS220+\footnote{\url{https://www.synology.com/fr-fr/products/DS220+}} hébergeant chacun un disque de 1To et un disque de 4To en RAID0 (ce qui laisse 5To de stockage utile par NAS).\\
+~\\
+Ces NAS présenteront des chemins iSCSI\footnote{\url{https://fr.wikipedia.org/wiki/ISCSI}}. Une carte réseau sera dédiée à cet usage et une à la gestion du NAS.\\
+
+\begin{tip}
+Pour un déploiement en environnement professionnel, des baies de disques professionnelles doivent être privilégiées. Synology propose des baies de disques professionnelles avec les mêmes paquets et la même configuration que ceux proposés dans ce document.
+\end{tip}
