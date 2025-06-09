@@ -1,0 +1,31 @@
+\subsection{Panneau de configuration}
+Toutes les configurations de ce chapitre sont réalisées depuis le panneau de configuration du NAS. Il est accessible depuis l'icône \textit{Panneau de configuration} dans le menu principal.
+
+\subsubsection{Dossier partagé}
+Aucun dossier partagé n'est nécessaire, le NAS n'ayant pour unique objet que l'hébergement de machines virtuelles.
+
+\subsubsection{Services de fichiers}
+Les services \textit{SMB}, \textit{AFP}, \textit{NFS}, \textit{FTP} et \textit{rsync} ne sont pas utilisés et peuvent être désactivés. Dans les options avancées, les services \textit{Bonjour}, \textit{SSDP} et \textit{TFTP} peuvent également être désactivés.
+
+\subsubsection{Utilisateurs et groupes}
+Un compte utilisateur au moins doit être créé, avec des droits d'administration. Si une jonction à un domaine est prévue, alors le compte par défaut \textit{admin} peut être conservé jusqu'à cette jonction.
+
+\subsubsection{Domaine/LDAP et client SSO}
+Ces options seront configurées dans le cadre d'une jonction à un domaine.
+
+\subsubsection{Accès externe}
+Aucun paramètre d'accès externe n'est requis dans le cadre du projet.
+
+\subsubsection{Réseau - Général}
+Le nom du serveur doit être configuré conformément à la nomenclature du projet.\\
+
+Les serveurs DNS sont, dans le cas d'un domaine Active Directory, les contrôleurs de domaine. Sinon, il peut s'agir des passerelles du projet, dont une annexe précise la mise en oeuvre en tant que relai DNS.
+
+\subsubsection{Réseau - Interface réseau}
+Deux interfaces seront utilisées: une pour iSCSI (présentation des LUN) et une pour la tolérance de panne entre les NAS.\\
+
+La première interface dispose d'une adresse IP fixe, et est reliée au reste de l'architecture. La seconde est connectée directement au second NAS et est configurée en DHCP.
+
+\begin{tip}
+Une bonne pratique serait d'avoir également une interface dédiée pour l'administration. Cependant, le modèle retenu ne permet pas cette configuration.
+\end{tip}

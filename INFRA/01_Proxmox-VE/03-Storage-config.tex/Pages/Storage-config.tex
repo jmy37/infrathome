@@ -27,3 +27,61 @@ Si d'aures tests sont disponibles, il est recommandé de les activer également.
 \end{tip}
 
 \subsubsection{Configuration du volume logique}
+Le volume logique correspond au volume de stockage qui sera utilisé pour héberger les machines virtuelles. La configuration est réalisée uniquement depuis le premier NAS, en suivant les étapes suivantes:
+\begin{itemize}
+    \item Ouvrir le \textit{Gestionnaire de stockage}
+    \item Accéder à la partie \textit{Stockage}
+    \item Créer un nouveau groupe de stockage
+    \item Choisir le type de RAID (dans l'architecture retenue, \textit{Basic}) (figure \ref{fig:03-storage-01})
+    \item Sélectionner le(s) disque(s) à utiliser pour le groupe de stockage (figure \ref{fig:03-storage-02})
+    \item Créer un volume logique (figure \ref{fig:03-storage-03})
+    \item Choisir un système de fichiers (dans l'architecture retenue, \textit{Btrfs}) (figure \ref{fig:03-storage-04})
+    \item Valider la création du groupe de stockage, du volume logique et du système de fichiers
+\end{itemize}
+
+\begin{important}
+Le RAID SHR n'est pas supporté par Synology High Availability. Si cette solution doit être utilisée, il est impératif de choisir un autre type de RAID, la bascule n'étant pas possible une fois le volume créé.
+\end{important}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{03-Storage-config.tex/Images/03-storage-01.png}
+    \caption{NAS - Stockage - Création d'un groupe de stockage}
+    \label{fig:03-storage-01}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{03-Storage-config.tex/Images/03-storage-02.png}
+    \caption{NAS - Stockage - Choix des disques}
+    \label{fig:03-storage-02}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{03-Storage-config.tex/Images/03-storage-03.png}
+    \caption{NAS - Stockage - Création du volume logique}
+    \label{fig:03-storage-03}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{03-Storage-config.tex/Images/03-storage-04.png}
+    \caption{NAS - Stockage - Choix du système de fichiers}
+    \label{fig:03-storage-04}
+\end{figure}
+
+Le volume logique est créé. Il est intéressant de planifier un nettoyage régulier des données.
+\begin{itemize}
+    \item Ouvrir le \textit{Gestionnaire de stockage}
+    \item Accéder à la partie \textit{Stockage}
+    \item Cliquer sur \textit{Planifier le nettoyage de données}
+    \item Activer le nettoyage de données par défaut pour l'ensemble des groupes de stockage (figure \ref{fig:03-cleaner-01})
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{03-Storage-config.tex/Images/03-cleaner-01.png}
+    \caption{NAS - Stockage - Planification du nettoyage de données}
+    \label{fig:03-cleaner-01}
+\end{figure}
