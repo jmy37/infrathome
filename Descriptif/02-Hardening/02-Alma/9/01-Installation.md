@@ -29,7 +29,7 @@
 | /var             | 3Go      | xfs                  | VG_System         | LV_var         |
 | swap             | 4Go      | xfs                  | VG_System         | LV_swap        |
 
-> [!TIP]
+> [!NOTE]
 > La taille du swap peut être ajustée finement en fonction de la configuration du système. [RedHat](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_storage_devices/getting-started-with-swap_managing-storage-devices#recommended-system-swap-space_getting-started-with-swap) préconise différentes tailles en fonction de la quantité de mémoire vive disponible et de l'activation de l'hibernation.
 > 
 > | Mémoire vive du serveur | Taille de swap recommandée (sans hibernation) | Taille de swap recommandée (avec hibernation) |

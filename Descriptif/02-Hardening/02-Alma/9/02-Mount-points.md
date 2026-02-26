@@ -1,4 +1,4 @@
-> [!TIP]
+> [!NOTE]
 > Le système est supposé installé conformément au chapitre d'[installation](01-Installation.md).
 
 ### Options de montage des points de montage

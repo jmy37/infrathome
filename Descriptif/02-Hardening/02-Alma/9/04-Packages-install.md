@@ -1,4 +1,4 @@
-> [!TIP]
+> [!NOTE]
 > Le système est supposé installé conformément au chapitre d'[installation](01-Installation.md), les [points de montage ont été reconfigurés](02-Mount-points.md) et la [synchronisation temporelle est assurée](03-Time-sync.md).
 
 ### Installation de paquets complémentaires
@@ -13,7 +13,7 @@ dnf -y install mlocate rsyslog
 
 > **Intégrer une description des paquets.**
 
-> [!NOTE]
+> [!IMPORTANT]
 > Dans le cadre d'une machine virtuelle, les extensions invités doivent être installées.
 
 Pour VMware:

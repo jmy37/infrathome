@@ -1,4 +1,4 @@
-> [!TIP]
+> [!NOTE]
 > Le système est supposé installé conformément au chapitre d'[installation](01-Installation.md) et les [points de montage ont été reconfigurés](02-Mount-points.md).
 
 ### Synchronisation temporelle
@@ -95,7 +95,7 @@ Les résultats s'interprètent de la manière suivante:
 
 Le remplacement des serveurs par défaut peut être réalisé en supprimant les serveurs et pools par défaut, en ajoutant les serveurs personnalisés et en redémarrant ``chrony``.
 
-> [!TIP]
+> [!WARNING]
 > En cas de copier/coller, ne pas oublier de mettre à jour les adresses IP ou FQDN des serveurs DNS.
 
 ```bash

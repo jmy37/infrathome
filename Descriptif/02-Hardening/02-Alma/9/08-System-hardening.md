@@ -1,4 +1,4 @@
-> [!TIP]
+> [!NOTE]
 > Le système est supposé installé conformément au chapitre d'[installation](01-Installation.md), les [points de montage ont été reconfigurés](02-Mount-points.md), la [synchronisation temporelle est assurée](03-Time-sync.md), l'[installation de paquets complémentaires](04-Packages-install.md), la [reconfiguration du noyau](05-Kernel-compilation.md), la [configuration des banniaères](06-Bruce-banner.md) et le [stockage des mots de passe](07-Password-storage.md).
 
 ### Durcissement système
@@ -48,7 +48,7 @@ Les paramètres sysctl seront appliqués après redémarrage du système.
 
 > **Préciser comment appliquer en live, et comment contrôler l'ordre d'application des paramètres.**
 
-> [!TIP]
+> [!INFO]
 > Un contrôle de l'application de chaque paramètre peut être réalisé en bash, à l'aide de ``sysctl <paramètre>`` qui renverra la valeur actuellement chargée.
 > Par exemple, le contrôle du paramètre ``kernel.sysrq`` est réalisé à l'aide de la commande ``sysctl kernel.sysrq``.
 

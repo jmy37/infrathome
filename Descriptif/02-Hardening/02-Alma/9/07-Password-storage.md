@@ -1,4 +1,4 @@
-> [!TIP]
+> [!NOTE]
 > Le système est supposé installé conformément au chapitre d'[installation](01-Installation.md), les [points de montage ont été reconfigurés](02-Mount-points.md), la [synchronisation temporelle est assurée](03-Time-sync.md), l'[installation de paquets complémentaires](04-Packages-install.md), la [reconfiguration du noyau](05-Kernel-compilation.md) et la [configuration des banniaères](06-Bruce-banner.md).
 
 ### Politique de mots de passe
