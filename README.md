@@ -7,8 +7,9 @@ Le projet est décomposé en plusieurs parties:
 1. [Descriptif du projet](00-Descriptif/README.md)
     1. [Présentation du projet](00-Descriptif/01-Presentation.md)
     2. [Règles de durcissement](00-Descriptif/02-Hardening/README.md)
-2. [Conception de la DMZ](01-DMZ/README.md)
-3. [Conception des core services](02-CS/README.md)
+2. [Mise en place de l'infrastructure](01-Infra/README.md)
+3. [Conception de la DMZ](02-DMZ/README.md)
+4. [Conception des core services](03-CS/README.md)
 
 Le projet mènera à l'installation des composants suivants (dans cet ordre):
 | Fonctionnalité                                | Guide d'installation                  |
