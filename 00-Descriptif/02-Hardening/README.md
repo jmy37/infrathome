@@ -7,3 +7,5 @@ Les règles de durcissement sont dans un premier temps adaptées à un équipeme
 1. [Durcissement des équipements physiques et des UEFI](01-UEFI-physical.md)
 2. [Alma Linux 9](02-01-Alma9.md)
 3. [Debian 13](03-01-Debian13.md)
+
+Pour revenir au descriptif, [cliquer ici](../README.md).

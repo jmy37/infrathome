@@ -3,11 +3,6 @@
 
 L'objectif du projet "*Infr@home*" est de proposer une architecture simple, résiliente et abordable de système d'information permettant de suivre les standards en termes d’organisation et de cybersécurité. Le projet est totalement virtualisé en environnement Proxmox VE, mais peut facilement être transposé sur d’autres hyperviseurs, voire en environnement physique.
 
-<!-- Cette présentation se compose de plusieurs sous-parties:
-1. [Présentation du projet](01-Project.md)
-2. [Conventions techniques](02-Conventions.md)
-3. [Présentation réseau](03-Network.md) -->
-
 ## Le projet "*Infr@home*"
 
 Ce projet est né de la réflexion qu'aucune solution clé en main n'existait pour mettre en place un laboratoire crédible, chaque brique pouvant être prise indépendamment ou communiquer les unes avec les autres.
@@ -31,25 +26,6 @@ Une convention d'écriture élémentaire sera retenue:
 
 > [!CAUTION]
 > Ces éléments, s'ils ne sont pas pris en compte, peuvent conduire à des pertes de données ou des indisponibilités sérieuses.
-
-Le projet mènera à l'installation des composants suivants (dans cet ordre):
-| Fonctionnalité                                | Guide d'installation                  |
-|-----------------------------------------------|---------------------------------------|
-| Filtrage de flux (périmétrie)                 |                                       |
-| Filtrage de flux (interne)                    |                                       |
-| Proxy                                         |                                       |
-| Bastion d'administration                      |                                       |
-| Bases de données PostgreSQL                   |                                       |
-| Supervision                                   |                                       |
-| Gestion des systèmes d'information (ITSM)     |                                       |
-| Gestion des journaux d'évènements             |                                       |
-| Mise à jour des systèmes Linux                |                                       |
-
-> [!NOTE]  
-> L'ordre d'installation, tout comme le choix des composants, n'est pas une nécessité.
-> Cependant, certaines parties peuvent s'appuyer sur des composants précédemment installés.
-> Il faudra alors adapter le guide pour contourner le composant non-installé.
-> Si une dépendance n'est pas mentionnée, ne pas hésiter à la remonter pour correction (en tant que bug dans le projet).
 
 ## Conventions
 ### Conventions réseau
@@ -75,7 +51,6 @@ La séparation des réseaux dans l'ensemble de ce projet est effective telle que
 | 255         | FWLHA_INT  | 10.255.255.0/30     | Synchronisation des pares-feux     |
 <!-- | 40          | CONTAINER  | 10.1.40.0/24        | Architecture de conteneurisation   | -->
 <!-- | 120         |            | 10.1.120.0/24       | Bastion d'administration           | -->
-<!-- |             |            |                     |                                    | -->
 
 > [!NOTE]
 > L'antépénultième adresse IP de chaque VLAN est réservée au premier pare-feu du cluster, l'avant-dernière adresse IP est réservée au second pare-feu du cluster et la dernière adresse IP est réservée à l'adresse virtuelle de passerelle. La première adresse IP de chaque VLAN ne sera pas utilisée.
@@ -96,30 +71,44 @@ La nomenclature des adresses IP virtuelles se réalise de la manière suivante:
 > Cette nomenclature, très pratique pour conserver une cartographie cohérente de l'ensemble du système d'information, peut être complétée par des alias DNS permettant aux utilisateurs une identification simplifiée des services.
 
 La nomenclature complète est présentée dans le tableau ci-dessous:
-| TYPE         | OS           | ENV            | USAGE                                   | SITE       | SI                 |
-|--------------|--------------|----------------|-----------------------------------------|------------|--------------------|
-| L (LUN)      | L (linux)    | L (labo)       | ACS (contrôleur de domaine)             | A (site A) | BD (Big data)      |
-| P (physique) | N (sans OS)  | P (production) | AVS (antivirus)                         | B (site B) | CS (Core services) |
-| V (virtuel)  | S (Synology) | S (staging)    | BKP (sauvegarde)                        |            |                    |
-|              | V (VMware)   |                | CLT (client)                            |            |                    |
-|              |              |                | DBS (bases de données)                  |            |                    |
-|              |              |                | FWL (pare-feu)                          |            |                    |
-|              |              |                | GSV (GeoServer)                         |            |                    |
-|              |              |                | HYP (hyperviseur)                       |            |                    |
-|              |              |                | IEM (SIEM)                              |            |                    |
-|              |              |                | ITM (ITSM)                              |            |                    |
-|              |              |                | LOG (journaux)                          |            |                    |
-|              |              |                | NAS (stockage)                          |            |                    |
-|              |              |                | OSM (cartographie)                      |            |                    |
-|              |              |                | PKI (infrastructure de gestion de clés) |            |                    |
-|              |              |                | PRX (proxy)                             |            |                    |
-|              |              |                | REP (dépôt)                             |            |                    |
-|              |              |                | RDG (bastion)                           |            |                    |
-|              |              |                | RTR (routeur)                           |            |                    |
-|              |              |                | UPD (mises à jour)                      |            |                    |
-|              |              |                | VAS (scanner de vulnérabilités)         |            |                    |
-|              |              |                | VCE (vCenter)                           |            |                    |
-<!-- |              |              |                |                                         |            |                    | -->
+| CHAMP     | SIGNIFICATION                                         |
+|-----------|-------------------------------------------------------|
+| TYPE      | L (LUN)                                               |
+|           | P (physique)                                          |
+|           | V (virtuel)                                           |
+| OS        | L (Linux)                                             |
+|           | N (sans OS)                                           |
+|           | S (Synology OS)                                       |
+|           | V (VMware)                                            |
+| ENV       | D (démonstration)                                     |
+|           | L (laboratoire)                                       |
+|           | P (production)                                        |
+|           | S (pré-production)                                    |
+| USAGE     | ACS (contrôleur de domaine)                           |
+|           | AVS (antivirus)                                       |
+|           | BKP (sauvegarde)                                      |
+|           | CLT (client)                                          |
+|           | DBS (bases de données)                                |
+|           | FWL (pare-feu)                                        |
+|           | GSV (GeoServer)                                       |
+|           | HYP (hyperviseur)                                     |
+|           | IEM (SIEM)                                            |
+|           | ITM (ITSM)                                            |
+|           | LOG (journaux)                                        |
+|           | NAS (stockage)                                        |
+|           | OSM (cartographie)                                    |
+|           | PKI (infrastructure de gestion de clés)               |
+|           | PRX (proxy)                                           |
+|           | REP (dépôt)                                           |
+|           | RDG (bastion)                                         |
+|           | RTR (routeur)                                         |
+|           | UPD (mises à jour)                                    |
+|           | VAS (scanner de vulnérabilités)                       |
+|           | VCE (vCenter)                                         |
+| SITE      | A (site A)                                            |
+|           | B (site B)                                            |
+| SI        | BD (big data)                                         |
+|           | CS (core services)                                    |
 
 ## Présentation du réseau
 
@@ -152,7 +141,6 @@ Le tableau ci-dessous présente l'adressage IP de ce VLAN.
 | 192.168.10.19   | vlllogacs03   | Relai journaux DMZ 1                |
 | 192.168.10.20   | vlllogacs04   | Relai journaux DMZ 2                |
 <!-- | 192.168.10.21   | Traefik       |                                     | -->
-<!-- |                 |               |                                     | -->
 
 ### VLAN 20 "ADMIN"
 
@@ -177,7 +165,6 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 <!-- |                 |               | Backup                              | -->
 <!-- |                 |               | PKI                                 | -->
 <!-- |                 |               | VAS                                 | -->
-<!-- |                 |               |                                     | -->
 
 ### VLAN 30 "INFRA"
 
@@ -194,7 +181,6 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 | 10.1.30.5       | pslnasacs02   | NAS hébergeant les VM 2         |
 | 10.1.30.6       | pslnasacs0102 | VIP d'hébergement des VM        |
 | 10.1.30.7       | pllhypacs01   | Hyperviseur 1                   |
-<!-- |                 |               |                                     | -->
 
 <!-- ### VLAN 50 "BIGDATA"
 
@@ -214,7 +200,6 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 | 10.1.50.8       | vllgsvabd02   | Serveur GeoServer 2             |
 | 10.1.50.9       | vllgsvabd0102 | VIP GeoServer                   |
 | 10.1.50.10      | vlldssabd01   | Serveur Dataiku DSS             |
-|                 |               |                                 | -->
 
 
 <!-- ### VLAN 51 "WATER"
@@ -228,11 +213,13 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 | 10.1.51.1       | vllfwlacs0304 | Passerelle interne              |
 | 10.1.51.2       | vllfwlacs03   | Pare-feu interne 1              |
 | 10.1.51.3       | vllfwlacs03   | Pare-feu interne 2              |
-|                 |               |                                 | -->
 
 ### VLAN 100 "CLT"
 
+Ce VLAN représente les clients, de manière indiscriminée, des différents systèmes.
 
+> [!TIP]
+> Dans le cadre d'un système réel, une segmentation des clients en fonction de leur rôle serait mise en oeuvre dans une démarche de défense en profondeur et de contrôles d'accès réseau.
 
 Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 
@@ -241,11 +228,13 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 | 10.1.100.1      | vllfwlacs0304 | Passerelle interne              |
 | 10.1.100.2      | vllfwlacs03   | Pare-feu interne 1              |
 | 10.1.100.3      | vllfwlacs03   | Pare-feu interne 2              |
-|                 |               |                                 |
 
 ### VLAN 110 "CLT_ADMIN"
 
+Ce VLAN représente les clients d'administration, de manière indiscriminée, des différents systèmes.
 
+> [!TIP]
+> Dans le cadre d'un système réel, une segmentation des administrateurs en fonction de leur rôle pourrait être mise en oeuvre dans une démarche de défense en profondeur et de contrôles d'accès réseau.
 
 Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 
@@ -254,7 +243,6 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 | 10.1.110.1      | vllfwlacs0304 | Passerelle interne              |
 | 10.1.110.2      | vllfwlacs03   | Pare-feu interne 1              |
 | 10.1.110.3      | vllfwlacs03   | Pare-feu interne 2              |
-|                 |               |                                 |
 
 ### VLAN 254 "FWLHA_DMZ"
 
@@ -276,4 +264,6 @@ Le tableau ci-dessous représente l'adressage IP de ce VLAN.
 | Adresse IP      | Nom DNS       | Fonctionnalité                  |
 |-----------------|---------------|---------------------------------|
 | 10.255.255.1/30 | vllfwlacs03   | Pare-feu interne 1              |
-| 10.255.255.2/30 | vllfwlacs04   | Pare-feu interne 2              |
+| 10.255.255.2/30 | vllfwlacs04   | Pare-feu interne 2              |  -->
+
+Pour revenir au descriptif, [cliquer ici](../README.md).

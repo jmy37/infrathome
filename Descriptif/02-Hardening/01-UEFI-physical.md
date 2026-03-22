@@ -1,2 +1,0 @@
-<!-- Synology
-VM et UEFI -->
