@@ -1,4 +1,3 @@
-[TOC]
 # Descriptif du projet
 ## Présentation
 

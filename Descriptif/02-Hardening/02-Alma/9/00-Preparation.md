@@ -1,3 +1,0 @@
-## Préparation de l'installation
-
-La création du média d'installation USB est réalisée conformément aux [préconisations de RedHat](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/automatically_installing_rhel/assembly_creating-a-bootable-installation-medium_rhel-installer): emploi de l'image ISO d'installation et d'une clé USB (16Go), et création de la clé amorçable à l'aide de "*Fedora Media Writer*".
