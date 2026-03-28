@@ -8,7 +8,7 @@ Ce dépôt s'appuie sur une installation minimale d'Alma Linux conforme au [guid
 La composition minimale du serveur est présentée dans le tableau ci-dessous:
 | Composant     | Caractéristique           | 
 |---------------|---------------------------|
-| Processeur    | 1 coeur (minimal)         |
+| Processeur    | 1 cœur (minimal)         |
 | Mémoire vive  | 2Go (minimal)             |
 | Stockage      | 35Go (système)            |
 |               | 50Go extensibles (dépôt)  |
@@ -329,7 +329,97 @@ systemctl start rsyncd
 ```
 
 ## Création d'un cluster de tolérances de panne
+### Présentation de la solution
+Puisqu'il n'y a pas de base de données sur ce système, la configuration de la tolérance de panne est très simple à mettre en œuvre.
 
+Les pares-feux étant déjà configurés, et pouvant facilement superviser les deux serveurs, le plus simple est que ce soit eux qui supportent l'adresse IP virtuelle.
+
+> [!CAUTION]
+> **ATTENTION**: Cette solution implique que toutes les modifications apportées au script de récupération de fichiers, aux sources et aux fichiers modèles devra être réalisée depuis le serveur principal.
+> Si cette règle n'est pas respectée, les fichiers mis à jour depuis le serveur secondaire seront écrasés à intervalles réguliers.
+
+### Installation du second serveur
+L'installation du serveur est très similaire à l'installation du premier.
+- Créer un serveur correspondant à la [composition attendue](#composition-du-serveur)
+- Ouvrir les flux identifiés dans la [matrice de flux](#matrice-de-flux)
+- Créer le [compte de service](#création-dun-compte-de-service)
+- Mettre en place le [script de récupération des sources](#script-de-récupération-des-sources)
+- Créer les [chemins indispensables](#création-des-chemins-indispensables)
+- Configurer [rsync](#activation-de-rsync)
+
+### Configuration de la réplication, des paramètres et des modèles
+
+> [!IMPORTANT]
+> Toutes les actions ci-dessous sont réalisées **uniquement sur le serveur principal**.
+
+Le serveur principal doit être en mesure de synchroniser les différents fichiers utiles, afin d'éviter toute recopie. Cette synchronisation sera réalisée à l'aide du démon ``lsync``.
+```bash
+dnf -y install lsyncd
+```
+
+Une clé SSH doit être réalisée depuis le serveur principal, et partagée sur le serveur secondaire.
+```bash
+ssh-keygen -q -t rsa -b 4096 -f /root/.ssh/id_rsa -N ""
+ssh-copy-id root@vlsrepacs02.infra-at-home.com
+[...]
+root@vlsrepacs02's password:
+[...]
+```
+
+Le fichier de configuration de ``lsync`` doit désormais être renseigné.
+```bash
+echo -e '----
+-- User configuration file for lsyncd.
+settings {
+  logfile="/var/log/lsyncd/lsyncd.log",
+  statusFile="/var/log/lsyncd/lsyncd.status",
+  insist=true
+  }
+
+sync{
+  default.rsyncssh,
+  source="/opt/",
+  host="vlsrepacs02",
+  targetdir="/opt/"
+  }
+
+sync{
+  default.rsyncssh,
+  source="/etc/yum.repos.d/",
+  host="vlsrepacs02",
+  targetdir="/etc/yum.repos.d/"
+  }
+
+sync{
+  default.rsyncssh,
+  source="/var/www/html/yum.repos.d.sample/",
+  host="vlsrepacs02",
+  targetdir="/var/www/html/yum.repos.d.sample/"
+  }
+
+sync{
+  default.rsyncssh,
+  source="/var/www/html/rpm-gpg-key/",
+  host="vlsrepacs02",
+  targetdir="/var/www/html/rpm-gpg-key/"
+  }\n' > /etc/lsyncd.conf
+```
+
+Le démon ``lsync`` doit désormais être exécuté au lancement du système, et immédiatement.
+```bash
+systemctl start lsyncd
+systemctl enable lsyncd
+```
+
+### Planification de la synchronisation sur le serveur secondaire
+La synchronisation mise en œuvre sur le premier serveur doit être mise en œuvre sur le second serveur.
+```bash
+echo -e "  0  1  *  *  * svc_repodnf /opt/sync_sources/sync_sources.sh" >> /etc/crontab
+```
+
+> [!TIP]
+> Afin de limiter la charge réseau, une heure différente de celle configurée sur le premier serveur doit être privilégiée.
+> Ces deux créneaux horaires ne doivent pas entrer en collision avec les créneaux de mises à jour planifiées; ce comportement pourrait causer des erreurs de mises à jour, l'OS client cherchant à récupérer des fichiers pas encore téléchargés.
 
 # Ajout de sources
 ## Sources DNF/YUM
@@ -1363,41 +1453,110 @@ sudo -u svc_repodnf rsync --archive --hard-links --numeric-ids --stats rsync://m
 ```
 
 ## Sources HTTP/HTTPS (wget)
-
+L'ajout de sources http/https se fait facilement à l'aide des étapes suivantes:
+- Ajouter les informations relatives au dépôt dans le fichier listant les dépôts (cible, niveaux à couper, domaine et lien)
+- Réaliser une synchronisation initiale
 
 ### iTop
+Le téléchargement régulier des versions d'iTop est inutile.
+Un téléchargement manuel lors des sorties de nouvelles versions est plus cohérent.
 
+```bash
+sudo -u svc_repodnf wget -P /var/www/html/itop/ https://sourceforge.net/projects/itop/files/itop/3.1.0-2/iTop-3.1.0-2-11973.zip
+sudo -u svc_repodnf wget --directory-prefix=/var/www/html/itop/ https://sourceforge.net/projects/teemip/files/teemip%20-%20an%20iTop%20module/3.1.3/teemip-core-ip-mgmt-3.1.3-810.zip
+```
 
 ### OpenStreetMap
+Les fichiers cartographiques d'OpenStreetMap sont actualisés quotidiennement.
+Un ajustement peut être effectué afin de ne télécharger que ceux utiles.
 
+> [!TIP]
+> La documentation relative à l'installation d'un serveur local OpenStreetMap détaille l'utilité de chaque fichier.
+
+#### France
+```bash
+echo -e "openstreetmap/data,1,geofabric.de,https://download.geofabrik.de/europe/france-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=1 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/europe/france-latest.osm.pbf
+```
+
+#### Afrique
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/africa-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/africa-latest.osm.pbf
+```
+
+#### Amérique centrale
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/central-america-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/central-america-latest.osm.pbf
+```
+
+#### Amérique du nord
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/north-america-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/north-america-latest.osm.pbf
+```
+
+#### Amérique du sud
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/south-america-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/south-america-latest.osm.pbf
+```
+
+#### Antarctique
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/antarctica-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/antarctica-latest.osm.pbf
+```
+
+#### Asie
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/asia-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/asia-latest.osm.pbf
+```
+
+#### Europe
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/europe-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/europe-latest.osm.pbf
+```
+
+#### Océanie
+```bash
+echo -e "openstreetmap/data,0,geofabric.de,https://download.geofabrik.de/australia-oceania-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=0 -k -np -D geofabrik.de -P /var/www/html/openstreetmap/data/ https://download.geofabrik.de/australia-oceania-latest.osm.pbf
+```
+
+#### Planète entière
+```bash
+echo -e "openstreetmap/data,1,openstreetmap.org,http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf" >> /opt/sync_sources/wget
+sudo -u svc_repodnf wget -R md5,txt,html,tmp -r -nH --cut-dirs=1 -k -np -D openstreetmap.org -P /var/www/html/openstreetmap/data/ http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+```
 
 ## Sources Git
-
+> [!CAUTION]
+> Ce type de dépôt doit être créé.
 
 ### Apache Guacamole
 
 
 
 ## Base de signatures virales ClamAV
+ClamAV ne permet pas le téléchargement automatique des fichiers de mises à jour. Cependant, le serveur disposant lui-même de l'antivirus, une simple copie de ses bases de définition aboutit au même résultat.
 
+> [!NOTE]
+> La mise à jour des paquets est assurée par la mise à jour du système, ceux-ci faisant partie du dépôt EPEL.
 
+```bash
+echo -e "  15 *  *  *  * root       /usr/bin/cp /var/lib/clamav/* /var/www/html/clamav-antivirus/" >> /etc/crontab
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+> [!NOTE]
+> Si la [configuration durcie](../00-Descriptif/02-Hardening/02-01-Alma9.md) a été appliquée, les mises à jour ne sont pas récupérées en ligne.
+> Il est alors nécessaire de mettre à jour la source de mises à jour de ClamAV.
+> ```bash
+> sed -i -- 's+PrivateMirror vlsrepacs01+#PrivateMirror vlsrepacs01+g' /etc/freshclam.conf
+> sed -i -- 's+#DatabaseMirror database.clamav.net+DatabaseMirror database.clamav.net+g' /etc/freshclam.conf
+> ```
 
 Pour revenir à la configuration de la DMZ, [cliquez ici](README.md).
