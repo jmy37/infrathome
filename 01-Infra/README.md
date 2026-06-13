@@ -35,6 +35,66 @@ Ces NAS présenteront des chemins [iSCSI](https://fr.wikipedia.org/wiki/ISCSI). 
 > Dans la mesure du possible, une réplication des NAS sera mise en oeuvre vers un site distant.
 > Synology propose des baies de disques professionnelles avec les mêmes paquets et la même configuration que ceux proposés dans ce document.
 
+Une topologie réseau est présentée ci-dessous:
+```mermaid
+flowchart LR
+
+    subgraph ISP["🌐 Internet"]
+        ISP_RT["🔀 Routeur ISP\n172.16.100.1"]
+        ISP_INTERNET["🌐 Internet"]
+        ISP_RT <--> ISP_INTERNET
+    end
+
+    DMZ_FWL["Pare-feu externe"]
+
+    subgraph DMZ["DMZ\n192.168.10.0/24"]
+        DMZ_REPO-DNF["Dépôt DNF"]
+        DMZ_REPO-APT["Dépôt APT"]
+        DMZ_PROXY["Proxy"]
+        DMZ_PROXY-SUP["Proxy de supervision"]
+        subgraph DMZ_K3S["K3S"]
+            DMZ_K3S_CORE["Nodes K3S"]
+            DMZ_RP["Reverse proxy"]
+        end
+        DMZ_REPO-DNF --> DMZ_PROXY
+        DMZ_REPO-APT --> DMZ_PROXY
+        DMZ_PROXY-SUP -- Supervise --> DMZ_REPO-DNF
+        DMZ_PROXY-SUP -- Supervise --> DMZ_REPO-APT
+        DMZ_PROXY-SUP -- Supervise --> DMZ_PROXY
+        DMZ_PROXY-SUP -- Supervise --> DMZ_K3S_CORE
+        DMZ_PROXY-SUP -- Supervise --> DMZ_RP
+    end
+
+    CS_FWL["Pare-feu interne"]
+
+    subgraph ADMIN["Core services\n10.1.20.0/24"]
+        ADMIN_BDD
+        ADMIN_ITM
+        ADMIN_BKP
+        subgraph ADMIN_K3S
+
+        end
+        ADMIN_PKI
+        ADMIN_DBS
+        ADMIN_UPD
+        ADMIN_XDR
+        ADMIN_VAS
+    end
+
+    subgraph INFRA["Infrastructure\n10.1.30.0/24"]
+        INFRA_HYP["Hyperviseurs"]
+        INFRA_SAN["Stockage"]
+    end
+
+ISP_RT <--> DMZ_FWL
+DMZ_FWL <--> DMZ
+CS_FWL --> DMZ
+CS_FWL <--> ADMIN
+CS_FWL <--> INFRA
+```
+
+
+
 ## Installations et configurations
 ### Proxmox VE
 
