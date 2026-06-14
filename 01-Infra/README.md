@@ -45,7 +45,7 @@ flowchart LR
         ISP_RT <--> ISP_INTERNET
     end
 
-    DMZ_FWL["Pare-feu externe"]
+    DMZ_FWL["🧱 Pare-feu externe"]
 
     subgraph DMZ["DMZ\n192.168.10.0/24"]
         DMZ_REPO-DNF["Dépôt DNF"]
@@ -65,7 +65,7 @@ flowchart LR
         DMZ_PROXY-SUP -- Supervise --> DMZ_RP
     end
 
-    CS_FWL["Pare-feu interne"]
+    CS_FWL["🧱 Pare-feu interne"]
 
     subgraph ADMIN["Core services\n10.1.20.0/24"]
         ADMIN_BDD
